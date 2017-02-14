@@ -10,8 +10,8 @@ class BookList extends Component {
       return (
         <li
           key={book.title}
-          className="list-group-item"
-        >
+          onClick={() => this.props.selectBook(book)}
+          className="list-group-item">
           {book.title}
         </li>
       );
@@ -30,15 +30,27 @@ class BookList extends Component {
 function mapStateToProps(state) {
   {/*Takes in application state (all of it). Whatever is returned will show up as props inside BookList above*/}
   return {
-  books: state.books {/* state has 2 props right now - books array, activeBook. books reducer is returning book book list*/}
-  }
+  books: state.books
+  };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators ({ selectBook: selectBook }, dispatch)
-}  {/*selectBook value in obj. is selectBook action imported from top */}
+{/* state has 2 props right now - books array, activeBook. books reducer is retrning back book list*/}
+{/*Anything returned from this list will end up as props
+on the BookList container*/}
 
-export default connect(mapStateToProps)(BookList)(mapDispatchToProps);
-{/* connect takes function and component to product container.
+function mapDispatchToProps(dispatch) {
+{/*Whenever selectBook is called, the result should be passed
+to all of our reducers */}
+  return bindActionCreators ({ selectBook: selectBook }, dispatch)
+}
+
+{/*selectBook value in obj. is selectBook action imported from top */}
+{/*Promot BookList from a component to a conainer - it neesd to know
+about htis new dispatch method, selectBook. Make it available
+as a prop.*/}
+
+export default connect(mapStateToProps,mapDispatchToProps)(BookList);
+
+{/* connect takes function and component to produce container.
 a container is aware of the state that is contained by Redux */}
 
